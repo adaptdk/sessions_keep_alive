@@ -8,18 +8,6 @@
 
 
 /**
- * Implements hook_permission().
- */
-
-function sessions_keep_alive_permission() {
-  return array(
-    'access sessions keep alive configuration' => array(
-      'title' => t('Access sessions keep alive settings'),
-    ),
-  );
-}
-
-/**
  * Implements hook_menu().
  */
 function sessions_keep_alive_menu() {
@@ -34,15 +22,6 @@ function sessions_keep_alive_menu() {
     'access callback' => TRUE,
   );
 
-  $items['admin/config/system/sessions_keep_alive'] = array(
-    'title' => 'Sessions Keep alive Configuration',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('sessions_keep_alive_admin_form'),
-    'access arguments' => TRUE,
-    'description' => 'Edit which forms should be affected.',
-    'type' => MENU_NORMAL_ITEM,
-  );
-
   return $items;
 }
 
@@ -54,36 +33,12 @@ function sessions_keep_alive_ajax_callback() {
   return TRUE;
 }
 
-
-/**
- * @param $form
- * @param $form_state
- */
-function sessions_keep_alive_admin_form($form, $form_state) {
-
-  $form['sessions_keep_alive_forms'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Forms'),
-    '#default_value' => variable_get('sessions_keep_alive_forms', ''),
-    '#description' => t('The forms that should be affected.'),
-  );
-  $form['sessions_keep_alive_interval'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Interval'),
-    '#default_value' => variable_get('sessions_keep_alive_interval', '15'),
-    '#description' => t('Number of minutes between session .'),
-  );
-
-  return system_settings_form($form);
-}
-
 /**
  * Implements hook_form_alter().
  */
 function sessions_keep_alive_form_alter(&$form, &$form_state, $form_id) {
-  $forms = str_replace(' ', '', variable_get('sessions_keep_alive_forms'));
-  $form_array = explode(',', $forms);
-  foreach ($form_array as $delta => $form_name) {
+  $forms = variable_get('sessions_keep_alive_forms');
+  foreach ($forms as $delta => $form_name) {
     if ($form_id == $form_name) {
       $form['#attached']['js'][] = drupal_get_path('module', 'sessions_keep_alive') . '/js/sessions-keep-alive.js';
       $form['#attached']['js'][] = array(
