@@ -1,0 +1,5 @@
+name = Sessions keep alive
+description = Keeps sessions alive on selected forms.
+package = Session
+core = 7.x
+
