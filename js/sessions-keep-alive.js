@@ -5,7 +5,7 @@
             setInterval(function() {
                 jQuery.ajax({
                     type: 'POST',
-                    url: Drupal.settings.basePath + 'sessions/keep/alive/ajax',
+                    url: Drupal.settings.basePath + 'sessions/keep/alive',
                     dataType: 'json',
                 });
             }, 1000 * 60 * interval);
