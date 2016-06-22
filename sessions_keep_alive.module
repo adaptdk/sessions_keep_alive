@@ -37,7 +37,7 @@ function sessions_keep_alive_ajax_callback() {
  * Implements hook_form_alter().
  */
 function sessions_keep_alive_form_alter(&$form, &$form_state, $form_id) {
-  $forms = variable_get('sessions_keep_alive_forms');
+  $forms = variable_get('sessions_keep_alive_forms', array());
   foreach ($forms as $delta => $form_name) {
     if ($form_id == $form_name) {
 
