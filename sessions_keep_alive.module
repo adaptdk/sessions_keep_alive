@@ -41,7 +41,7 @@ function sessions_keep_alive_form_alter(&$form, &$form_state, $form_id) {
   foreach ($forms as $delta => $form_name) {
     if ($form_id == $form_name) {
 
-      $form['#validate'][] = 'sessions_keep_alive_validate';
+      $form['#validate'][] = 'sessions_keep_alive_forms_validate';
 
       $form['#attached']['js'][] = drupal_get_path('module', 'sessions_keep_alive') . '/js/sessions-keep-alive.js';
       $form['#attached']['js'][] = array(
@@ -56,6 +56,13 @@ function sessions_keep_alive_form_alter(&$form, &$form_state, $form_id) {
  * Implements hook_validate().
  */
 function sessions_keep_alive_validate($node, $form, &$form_state) {
+  sessions_keep_alive_forms_validate($form, $form_state);
+}
+
+/**
+ * Helper function that checks if users is logged in.
+ */
+function sessions_keep_alive_forms_validate($form, &$form_state) {
   if (!user_is_logged_in()) {
     form_set_error('form', t('Your sessions timed out, you need to log back in and try again.'));
   }
